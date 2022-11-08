@@ -9,7 +9,7 @@ title: The `/__debug/` endpoint
 weight: 35
 notoc: true
 ---
-The `/__debug/` endpoint is available when you start the server with the `-d` flag.
+The `/__debug/` endpoint is available when you start the server with the `-d` flag or when you add enable the flag `debug_endpoint` in the configuration.
 
 The endpoint can be used as a **fake backend** and is very useful to see the interaction between the gateway and the backends as its activity is printed in the log using the `DEBUG` log level. The endpoint returns this content:
 
@@ -19,8 +19,7 @@ The endpoint can be used as a **fake backend** and is very useful to see the int
 }
 ```
 
-
-When developing, add KrakenD itself as another backend using the `/__debug/` endpoint so you can see exactly what headers and query string parameters your backends are receiving.
+When developing, add another backend pointing to KrakenD itself using the `/__debug/` endpoint so you can see exactly what headers and query string parameters your backends are receiving.
 
 The debug endpoint might save you much trouble, as your application might not work when specific headers or parameters are not present. Maybe you are relying upon what your client is sending, but this is not what the gateway is sending. Remember: this is not a proxy.
 
@@ -37,12 +36,13 @@ We are going to test the following endpoints:
     - Recognizes `User-Agent` and `Accept` as forwarded headers
 - `/mandatory/{variable}`: The query string parameters taken from a variable in the endpoint or other query string parameters
 
-To test it right now, save the content of this file in a `krakend-test.json` and start the server with the `-d` flag:
+To test it right now, save the content of this file in a `krakend-test.json` and start the server:
 
 ```json
 {
   "version": 3,
   "port": 8080,
+  "debug_endpoint": true,
   "host": ["http://127.0.0.1:8080"],
   "endpoints": [
     {
